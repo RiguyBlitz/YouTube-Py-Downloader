@@ -55,7 +55,7 @@ def video_module():
     #grab resolutions
     resolutions = []
     for video_resolutions in videos:
-        resolutions.append(video_resolutions.resolution)
+        resolutions.append(str(video_resolutions.resolution) + ' ' + str(video_resolutions.fps) + 'fps')
 
     #create window
     video_window = Tk(className=" YoutubePY Downloader")
