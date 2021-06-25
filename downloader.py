@@ -2,8 +2,19 @@ import requests, tkinter, os, datetime
 from pytube import YouTube
 from tkinter import *
 from PIL import Image, ImageTk
+from pathlib import Path
+import subprocess, sys
 
 #functions
+
+# https://stackoverflow.com/a/17317468 lol
+def open_file(filename):
+    if sys.platform == "win32":
+        os.startfile(filename)
+    else:
+        opener = "open" if sys.platform == "darwin" else "xdg-open"
+        subprocess.call([opener, filename])
+
 def check():
     option = value_inside.get()
     if(option == "Video"):
@@ -121,20 +132,20 @@ def download_video(type, quality, stream_options):
             if(v.resolution.startswith(quality)):
                 video.append(v)
         video[0].download(output_path='video_downloads', filename=date)
-        os.startfile('video_downloads' + '\\' + date + '.mp4')
+        open_file(Path('video_downloads/' + date + '.mp4'))
         os.remove('img.png')
     elif(type == 'Just Audio'):
 
         audio_yt = YouTube(value.get())
         audio = audio_yt.streams.get_audio_only()
 
-        file_download_name_mp4 = 'video_downloads' + '\\' + date + '.mp4'
-        file_download_name_mp3 = 'video_downloads' + '\\' + date + '.mp3'
+        file_download_name_mp4 = Path('video_downloads/' + date + '.mp4')
+        file_download_name_mp3 = Path('video_downloads/' + date + '.mp3')
 
         audio.download(output_path='video_downloads', filename=date)
 
         os.rename(file_download_name_mp4, file_download_name_mp3)
-        os.startfile(file_download_name_mp3)
+        open_file(file_download_name_mp3)
         os.remove('img.png')
 
     elif(type == "Video and Audio"):
@@ -145,11 +156,11 @@ def download_video(type, quality, stream_options):
 root = Tk(className=" YoutubePY Downloader")
 root.geometry("500x300")
 root.resizable(height=False, width=False)
-root.call('wm', 'iconphoto', root._w, PhotoImage(file='Images\windowlogo.png'))
+root.call('wm', 'iconphoto', root._w, PhotoImage(file=Path('Images/windowlogo.png')))
 
 #create canvas and open image
 canvas = Canvas(root, width = 256, height = 144)
-image = Image.open("Images\pythonyoutubedownloader.png")
+image = Image.open(Path("Images/pythonyoutubedownloader.png"))
 image = image.resize((256, 144), Image.ANTIALIAS)
 my_img = ImageTk.PhotoImage(image)
 canvas.create_image(20, 20, anchor=NW, image=my_img)

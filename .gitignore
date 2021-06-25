@@ -1,0 +1,5 @@
+# ignore downloaded videos
+video_downloads/
+
+# ignore temporarily added thumbnail file
+img.png
